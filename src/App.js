@@ -47,6 +47,25 @@ const App = () => {
 		setItems(newItems);
 	};
 
+
+	const handleQuantityDecrease = (index) => {
+		//itemsを展開した配列、newItemsを作る
+		const newItems = [...items];
+		//quantityに-1する
+		newItems[index].quantity --;
+		setItems(newItems);
+	}
+
+
+	const handleQuantityIncrease = (index) => {
+		//itemsを展開した配列、newItemsを作る
+		const newItems = [...items];
+		//quantityに+1する
+		newItems[index].quantity ++;
+		setItems(newItems);
+	}
+
+
 	return (
 		<div className="app-background">
 			<div className="main-container">
@@ -78,11 +97,11 @@ const App = () => {
 							</div>
 							<div className="quantity">
 								<button>
-									<FontAwesomeIcon icon={faChevronLeft} />
+									<FontAwesomeIcon icon={faChevronLeft}　onClick={() => handleQuantityDecrease(index)} />
 								</button>
 								<span> {item.quantity} </span>
 								<button>
-									<FontAwesomeIcon icon={faChevronRight} />
+									<FontAwesomeIcon icon={faChevronRight}　onClick={() => handleQuantityIncrease(index)}  />
 								</button>
 							</div>
 						</div>
