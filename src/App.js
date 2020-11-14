@@ -37,6 +37,16 @@ const App = () => {
 		setInputValue('');
 	};
 
+	//done切り替え
+	const toggleComplete = (index) => {
+		//itemsを展開した配列、newItemsを作る
+		const newItems = [...items];
+		//引数にindexから、該当するitemのisSelectedを切り替える
+		newItems[index].isSelected = !newItems[index].isSelected;
+	
+		setItems(newItems);
+	};
+
 	return (
 		<div className="app-background">
 			<div className="main-container">
@@ -48,9 +58,12 @@ const App = () => {
 				</div>
 				<div className="item-list">
 					{/* mapを使ってitems配列をitemのループで出力する */}
+					{/* indexを設定する事で、クリックイベント時にそのアイテムがどれか判断できる */}
 					{items.map((item, index) => (
 						<div className="item-container">
-							<div className="item-name">
+							{/* toggleCompleteにindexを渡す事で、そのitemのisSelected切り替える。 */}
+							<div className="item-name" onClick={() => toggleComplete(index)}>
+								{/* 条件分岐、trueなら上、falseなら下を表示 */}
 								{item.isSelected ? (
 									<>
 										<FontAwesomeIcon icon={faCheckCircle} />
