@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import './App.scss';
 import { Cards } from './components/Cards/Cards';
 import { Chart } from './components/Chart/Chart';
@@ -13,6 +13,8 @@ import { fetchData } from './api'
 
 
 export const App = () => {
+const [data,setData] =useState({})
+  
   useEffect(() => {
     let unmounted = false;
 
@@ -20,19 +22,19 @@ export const App = () => {
     (async () => {
       if (!unmounted) {
         //非同期でデータを取得
-        const data = fetchData();
-        console.log(data);
+        const fetchedData = fetchData();
+        setData(fetchedData)
       };
     })();
 
     //クリーンアップ関数を返す
     return () => { unmounted = true; };
-  });
+  },[]);
 
 
   return (
     <div className="container" >
-      <Cards />
+      <Cards data={{data}}/>
       <Chart />
       <CountryPicker />
     </div>
