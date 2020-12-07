@@ -1,26 +1,20 @@
-//covid-19のでapiを撮ってくる
+//covid_19のでapiを撮ってくる
 
 import axios from 'axios'
+import {data} from './../api/types'
 
 const url = 'https://covid19.mathdro.id/api'
 
-export const fetchData = async () => {
+export const fetchData = async ():Promise<data> => {
 
     try {
-        const { data: { confirmed, recovered, deaths, lastUpdate } } = await axios.get(url);
+        const { data}  = await axios.get<data>(url);
 
-        const modifiedData = {
-            confirmed,
-            recovered,
-            deaths,
-            lastUpdate
-
-        }
-        return modifiedData;
+        return data;
 
     } catch (error) {
         console.log("エラー")
-        return {}
+        return {} as data
 
     }
 }
