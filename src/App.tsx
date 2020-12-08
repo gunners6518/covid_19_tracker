@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import './App.scss';
-import { Cards } from './components/Cards/Cards';
-import { Chart } from './components/Chart/Chart';
-import { CountryPicker } from './components/CountryPicker/CountryPicker';
+import React, { useEffect, useState, useCallback } from 'react';
+import styles from './App.module.css';
+import { Cards, CountryPicker, Chart } from './components';
 import { fetchData } from './api'
-import {data} from './api/types'
+import { Data } from './api/types'
+import image from './images/image.png';
 
 // import { Cards, Chart, CountryPicker } from './components'
 
-export const App = () => {
-  const [data, setData] = useState<data>({} as data)
+export const App: React.FC = () => {
+  const [data, setData] = useState<Data>({} as Data)
 
   useEffect(() => {
     let unmounted = false;
@@ -18,7 +17,7 @@ export const App = () => {
     (async () => {
       if (!unmounted) {
         //非同期でデータを取得
-        const fetchedData = (await fetchData()) as data;
+        const fetchedData = (await fetchData()) as Data;
         setData(fetchedData)
       };
     })();
@@ -28,15 +27,18 @@ export const App = () => {
 
   }, []);
 
-  console.log(data);
-
-
+  const onHandleCountryChange = useCallback(async (selectedCountry: string) => {
+    const response = await fetchData(selectedCountry)
+    setData({ ...response, country: selectedCountry })
+  }, [])
 
   return (
-    <div className="container" >
+    <div className={styles.container} >
+      <img className={styles.image} src={image} alt="COVID-19 Tracker" />
       <Cards data={data} />
-      <Chart />
-      <CountryPicker />
+      <CountryPicker handleCountryChange={onHandleCountryChange} />
+      <Chart data={data} />
+
     </div>
   );
 }
